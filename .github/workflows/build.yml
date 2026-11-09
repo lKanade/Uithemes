@@ -17,16 +17,23 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Install Gradle Manually
+      - name: Acomodar carpetas automáticamente
+        run: |
+          if [ -d "app/app" ]; then
+            cp -r app/app/* app/
+            rm -rf app/app
+          fi
+
+      - name: Instalar Gradle
         run: |
           wget https://services.gradle.org/distributions/gradle-8.2-bin.zip
-          unzip gradle-8.2-bin.zip
+          unzip -q gradle-8.2-bin.zip
           echo "$PWD/gradle-8.2/bin" >> $GITHUB_PATH
 
-      - name: Build APK
+      - name: Compilar APK
         run: gradle assembleDebug
 
-      - name: Upload APK
+      - name: Subir APK
         uses: actions/upload-artifact@v3
         with:
           name: at-studio-apk
